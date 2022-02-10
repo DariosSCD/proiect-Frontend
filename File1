@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang = "en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Hello World</title>
+<script>
+class Character{
+    constructor(name,health,strenght,coins)
+    {
+        this.name=name;
+        this.health=health;
+        this.strenght=strenght;
+		this.coins=coins;
+		this.xp=0;
+    }
+    describe(){
+        return `${this.name} has ${this.health} health points, ${this.strenght} as strenght,  
+        ${this.xp} XP points and ${this.coins} coins`;
+    }
+    //functie atac
+    attack(target)
+    {
+        if(this.health>0) //verificam nivelul vietii
+        {
+            const damage=this.strenght;
+            //puterea caracterului curent - viata adversar
+            console.log(`${this.name} ataca pe ${target.name} si ii scade din viata ${damage} puncte`);
+            target.health-=damage; //se scade din viata target valoarea damage
+            if(target.health>0){
+                console.log(`${target.name} mai are ${target.health} puncte de viata ramase`);
+            }
+            else
+            {
+                const bonusxp=10;
+                console.log(`${this.name} l-a eliminat pe ${target.name} si castiga ${bonusxp} puncte experienta`);
+                this.xp=bonusxp;
+            }
+        }
+        else
+        {
+            console.log(`${this.name} nu poate ataca deoarece este eliminat`);
+        }
+    }
+}
+class Inventory {
+	constructor(name, strength, health, price) 
+	{
+		this.name=name;
+		this.strength=strength;
+		this.health=health;
+		this.price=price;
+	}
+}
+class Shop {
+	constructor() 
+	{
+		this.inventories=[
+			new Inventory('bronze', 1, 2, 5),
+			new Inventory('silver', 3, 1, 8),
+			new Inventory('gold', 5, 5, 15),
+			new Inventory('platinum', 10, 8, 25),
+		];
+	}
+	buy(name, character) 
+	{
+		var inventory=null;
+		for(var i=0;i<this.inventories.length;i++){
+			if(this.inventories[i].name === name){
+				inventory=this.inventories[i];
+			}
+		}
+		if(inventory !== null && character.coins >= inventory.price){
+			character.health+=inventory.health;
+			character.strenght+=inventory.strength;
+			character.coins-=inventory.price;
+		}
+	}
+}
+const aurora=new Character("Aurora",150,25,50);
+const glacius=new Character("Glacius",130,25,10);
+const monst=new Character("Rrrr",80,10,2);
+const shop=new Shop();
+aurora.health-= 10;
+aurora.strenght+= 10;
+aurora.xp+=15;
+aurora.attack(monst);
+glacius.attack(monst);
+console.log(aurora.describe());
+console.log(glacius.describe());
+console.log('Aurora buys silver');
+shop.buy('silver', aurora);
+console.log(aurora.describe());
+
+</script>
+
+</head>
